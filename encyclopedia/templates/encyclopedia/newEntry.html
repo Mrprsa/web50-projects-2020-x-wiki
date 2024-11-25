@@ -1,0 +1,40 @@
+{% block entry_section %}
+    {% if not existing %}
+        <h1>Create a New Entry!</h1>
+        <p>Please fill out the form below to create a new entry.</p>
+    {% else %}
+        <h1>New entry is coming!</h1>
+    {% endif %}
+    
+    {% if existing %}
+    <div class="alert alert-danger" role="alert">
+        This entry already exists. If you want to view or edit it, <a href="/wiki/{{ entry }}" class="alert-link">click here</a> exists.
+    </div>
+    <div class="alert alert-info" role="alert">
+        Or you can change the entry name down here. It's up to you
+    </div>
+    {% endif %}
+    
+    <br>
+    <div class="form-group">
+        <form action="{% url 'newEntry' %}" method="post">
+           {% csrf_token %}
+           {{ form.as_p }}
+           <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    
+    <hr>
+    <h2>Recent Entries</h2>
+    <ul>
+        {% for recent_entry in recent_entries %}
+            <li><a href="/wiki/{{ recent_entry }}">{{ recent_entry }}</a></li>
+        {% empty %}
+            <li>No recent entries found.</li>
+        {% endfor %}
+    </ul>
+    
+    <div class="footer">
+        <p>&copy; {{ current_year }} Your Website Name. All rights reserved.</p>
+    </div>
+{% endblock %}
